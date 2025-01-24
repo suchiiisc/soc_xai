@@ -48,16 +48,9 @@ optimal_params = {
     'objective': 'reg:squarederror',
     'n_estimators': 582,
     'random_state': 42,
-    "eval_metric": "mse",
-    #'tree_method': 'gpu_hist',  # Use GPU if available
-    #'predictor': 'gpu_predictor',
-    'device': 'cuda'
-}#RMSE: 3.836066530843889
-#MAE: 1.9219335074290478
+    "eval_metric": "mse"
+}
 
-# Train XGBoost model
-#model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=582,max_depth= 5, random_state=42, device="cuda")#792
-#model = xgb.XGBRegressor(**optimal_params)#792
 model = xgb.XGBRegressor(#booster='dart',
     reg_lambda=2.9346200249618713e-07,       # L2 regularization term on weights
     reg_alpha=0.005579280483503804,          # L1 regularization term on weights
@@ -72,7 +65,7 @@ model = xgb.XGBRegressor(#booster='dart',
     n_estimators=582,                        # Number of boosting rounds
     objective='reg:squarederror', 
     #eval_metric= "mse",           # Loss function for regression
-    random_state=42 , device="cuda")#792
+    random_state=42)#792
 model.fit(X_train, y_train)
 
 # Predict and evaluate

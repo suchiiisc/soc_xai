@@ -11,17 +11,6 @@ import matplotlib.pyplot as plt
 import random
 
 # Check if GPU is available
-"""
-# Set random seeds for reproducibility
-random.seed(42)
-torch.manual_seed(42)
-np.random.seed(42)
-
-# If using GPU
-torch.cuda.manual_seed_all(42)
-"""
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
 
 class CNNRegressionModel(nn.Module):
     def __init__(self):
@@ -59,8 +48,8 @@ assert X_values.shape[0] == y_values.shape[0], "Number of samples in X and y mus
 
 # Reshape the data into the format (samples, channels, length) for Conv1d
 # The 'length' here corresponds to the number of features (1000), and 'channels' = 1 because it's tabular data.
-X_tensor = torch.tensor(X_values).float().view(-1, 1, 1000).to(device)  # Adjust to shape [samples, channels, features]
-y_tensor = torch.tensor(y_values).float().view(-1, 1).to(device)
+X_tensor = torch.tensor(X_values).float().view(-1, 1, 1000) # Adjust to shape [samples, channels, features]
+y_tensor = torch.tensor(y_values).float().view(-1, 1)
 
 # Create DataLoader
 dataset = TensorDataset(X_tensor, y_tensor)
@@ -72,8 +61,7 @@ train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
 # Initialize the model, optimizer, and loss function
-model = CNNRegressionModel().to(device)
-#optimizer = optim.Adam(model.parameters(), lr=0.001)#optim.SGD(
+model = CNNRegressionModel()#optimizer = optim.Adam(model.parameters(), lr=0.001)#optim.SGD(
 optimizer = optim.SGD(model.parameters(), lr=0.001)
 loss_fn = nn.MSELoss()  # Mean Squared Error loss for regression
 
